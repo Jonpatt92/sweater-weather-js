@@ -10,6 +10,7 @@ const database = require('knex')(configuration)
 
 var indexRouter = require('./routes/index');
 var forecastRouter = require('./routes/api/v1/forecast');
+var favoritesRouter = require('./routes/api/v1/favorites');
 
 
 app.use(logger('dev'));
@@ -22,6 +23,7 @@ app.locals.title = 'sweater-weather';
 
 app.use('/', indexRouter);
 app.use('/api/v1/forecast', forecastRouter);
+app.use('/api/v1/favorites', favoritesRouter);
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
