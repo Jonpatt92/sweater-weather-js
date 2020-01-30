@@ -32,12 +32,3 @@ router.get('/', (request, response) => {
 });
 
 module.exports = router;
-
-// fetchLocationAsync(search_location)
-//   .then(coordinates => {
-//     return fetchForecastAsync(coordinates)
-//   })
-//   .then(forecast => {
-//     console.log(forecast.hourly.data)
-//   })
-//   .catch(reason => console.log(reason.message));
