@@ -1,6 +1,7 @@
+var Forecast         = require('../../../lib/pojos/forecast')
+var location_service = require('../../../lib/services/services').location
+var forecast_service = require('../../../lib/services/services').forecast
 var express = require('express');
-var location_service = require('../../../lib/services').location
-var forecast_service = require('../../../lib/services').forecast
 var router = express.Router();
 
 const environment = process.env.NODE_ENV || 'development';
@@ -18,15 +19,19 @@ router.get('/', (request, response) => {
           .then(coordinates => {
             return forecast_service(coordinates)
           })
-          .then(forecast_data =>{
-            return response.status(200).json(forecast_data)
+          .then(forecast_data => {
+            var formattedForecast = new Forecast(forecast_data);
+            formattedForecast.formatData();
+            return response.status(200).json(formattedForecast)
           })
           .catch((error) => {
+            console.log(error)
             response.status(500).json({ error })
           });
       }
     })
     .catch((error) => {
+      console.log(error)
       response.status(500).json({ error });
     });
 });
