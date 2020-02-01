@@ -1,12 +1,12 @@
-var Forecast         = require('../../../lib/pojos/forecast')
-var location_service = require('../../../lib/services/services').location
-var forecast_service = require('../../../lib/services/services').forecast
-var express = require('express');
-var router = express.Router();
+var Forecast        = require('../../../lib/pojos/forecast')
+var locationService = require('../../../lib/services/services').location
+var forecastService = require('../../../lib/services/services').forecast
+var express         = require('express');
+var router          = express.Router();
 
-const environment = process.env.NODE_ENV || 'development';
+const environment   = process.env.NODE_ENV || 'development';
 const configuration = require('../../../knexfile')[environment];
-const database = require('knex')(configuration);
+const database      = require('knex')(configuration);
 
 router.get('/', (request, response) => {
   var api_key = request.query.api_key
@@ -15,12 +15,12 @@ router.get('/', (request, response) => {
       if (user === undefined) {
         return response.status(404).json({error: 'Invalid API key'})
       } else {
-        location_service(request.query.location)
+        locationService(request.query.location)
           .then(coordinates => {
-            return forecast_service(coordinates)
+            return forecastService(coordinates)
           })
-          .then(forecast_data => {
-            var formattedForecast = new Forecast(forecast_data);
+          .then(forecastData => {
+            var formattedForecast = new Forecast(forecastData, request.query.location);
             formattedForecast.formatData();
             return response.status(200).json(formattedForecast)
           })
