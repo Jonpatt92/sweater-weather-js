@@ -11,6 +11,8 @@ exports.up = function(knex) {
     knex.schema.createTable('favorites', function(table) {
       table.increments('id').primary();
       table.string('location');
+      table.float('lat');
+      table.float('lng');
       table.integer('user_id').unsigned()
       table.foreign('user_id')
         .references('users.id');
