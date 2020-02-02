@@ -41,19 +41,20 @@ router.post('/', (request, response) => {
 router.delete('/', (request, response) => {
   var api_key = request.query.api_key
   var location = request.query.location
+
   database('users').where('api_key', api_key).first()
     .then(user => {
       if (user === undefined) {
         return response.status(404).json({error: 'Invalid API key'})
       } else {
         database('favorites')
-          .where('location', request.query.location)
+          .where('location', location)
           .del()
           .then(confirmation => {
             if (confirmation === 1) {
-              return response.status(204).json(`Favorite location ${request.query.location} deleted`)
+              return response.status(204).json(`Favorite location ${location} deleted`)
             } else {
-              return response.status(404).json(`Location ${request.query.location} isn't in your favorites`)
+              return response.status(404).json(`Location ${location} isn't in your favorites`)
             }
           })
       }
